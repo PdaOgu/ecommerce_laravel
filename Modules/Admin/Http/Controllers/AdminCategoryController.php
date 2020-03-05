@@ -41,4 +41,14 @@ class AdminCategoryController extends Controller
 
         return redirect()->back();
     }
+
+    public function edit($id)
+    {
+
+    }
+
+    public function update($id)
+    {
+
+    }
 }

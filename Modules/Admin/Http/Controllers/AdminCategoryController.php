@@ -17,7 +17,11 @@ class AdminCategoryController extends Controller
      */
     public function index ()
     {
-        return view('admin::category.index');
+        $categories = Category::select('id', 'c_name', 'c_title_seo', 'c_active')->get();
+        $viewData = [
+            'categories' => $categories,
+        ];
+        return view('admin::category.index', $viewData);
     }
 
     public function create () {

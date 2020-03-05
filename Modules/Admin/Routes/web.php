@@ -12,7 +12,7 @@
 */
 
 Route::prefix('admin')->group(function() {
-    Route::get('/', 'AdminController@index');
+    Route::get('/', 'AdminController@index')->name('admin.home');
     Route::prefix('category')->group(function () {
         Route::get('/', 'AdminCategoryController@index')->name('admin.get.list.category');
         Route::get('/create', 'AdminCategoryController@create')->name('admin.get.create.category');

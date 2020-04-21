@@ -7,7 +7,9 @@ use Illuminate\Http\Response;
 use Illuminate\Routing\Controller;
 use App\Http\Requests\RequestCategory;
 use App\Models\Category;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
+use Illuminate\Support\Facades\Log;
 
 class AdminCategoryController extends Controller
 {
@@ -29,26 +31,41 @@ class AdminCategoryController extends Controller
     }
 
     public function store (RequestCategory $reqCategory) {
-        // dd($reqCategory->all());
-
-        $category = new Category();
-        $category->c_name = $reqCategory->name;
-        $category->c_slug = Str::slug($reqCategory->name);
-        $category->c_icon = Str::slug($reqCategory->icon);
-        $category->c_title_seo = $reqCategory->c_title_seo ? $reqCategory->c_title_seo : $reqCategory->name;
-        $category->c_description_seo = $reqCategory->c_description_seo;
-        $category->save();
-
+        $this->insertOrUpdate($reqCategory);
         return redirect()->back();
     }
 
     public function edit($id)
     {
-
+        $category = Category::find($id);
+        return view('admin::category.edit', compact('category'));
     }
 
-    public function update($id)
+    public function update(RequestCategory $reqCategory, $id)
     {
+        $this->insertOrUpdate($reqCategory, $id);
+        return redirect()->back();
+    }
 
+    private function insertOrUpdate (RequestCategory $reqCategory, $id='')
+    {
+        $code = 1;
+        try {
+            $category = new Category();
+            if ($id) {
+                $category = Category::find($id);
+            }
+            $category->c_name = $reqCategory->name;
+            $category->c_slug = Str::slug($reqCategory->name);
+            $category->c_icon = Str::slug($reqCategory->icon);
+            $category->c_title_seo = $reqCategory->c_title_seo ? $reqCategory->c_title_seo : $reqCategory->name;
+            $category->c_description_seo = $reqCategory->c_description_seo;
+            $category->save();
+            Log::info('[insertOrUpdate Category] success');
+        } catch (\Exception $exception) {
+            $code = 0;
+            Log::error('[Error insertOrUpdate Category] '.$exception->getMessage());
+        }
+        return $code;
     }
 }

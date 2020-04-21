@@ -4,7 +4,7 @@
 <nav aria-label="breadcrumb">
     <ol class="breadcrumb">
         <li class="breadcrumb-item"><a href="{{ route('admin.home') }}" title="Trang chủ">Trang chủ</a></li>
-        <li class="breadcrumb-item active" aria-current="page" title="Danh mục">Danh mục</a></li>
+        <li class="breadcrumb-item active" aria-current="page">Danh mục</a></li>
     </ol>
 </nav>
 <div class="table-responsive">
@@ -31,7 +31,7 @@
                     <td>{{ $category->c_title_seo }}</td>
                     <td>{{ $category->c_active }}</td>
                     <td>
-                        <a href=""><i class="fas fa-edit"></i></a>
+                        <a href="{{ route('admin.get.edit.category', $category->id) }}"><i class="fas fa-edit"></i></a>
                         <a href=""><i class="fas fa-trash    "></i></a>
                     </td>
                 </tr>
